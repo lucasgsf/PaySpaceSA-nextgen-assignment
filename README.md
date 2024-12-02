@@ -53,7 +53,7 @@ You have been briefed to complete a tax calculator for an individual. The applic
 * All users pay 17.5% tax on their income
 
 **Approach:**
-* Use SOLID principals
+* Use SOLID principles
 * Use appropriate Design Patterns
 * IOC/Dependency Injection
 * Allow for entering the Postal code and annual income on the front end and submitting
