@@ -14,7 +14,7 @@ Once you have completed the task, please zip your repo & share it with TA Specia
 * Besides completing the test and getting it to work, and accuracy is important, it is also a chance to show the senior developers your understanding of a good framework so
   * Adhere to the SOLID principals
   * Complete the existing unit tests
-  * Avoid scaffolding
+  * Avoid scaffolding / Generated Code
   * Clean well-formatted code
   * Do not hardcode the calculators
   * Do not change the database, the application must use Sqlite
