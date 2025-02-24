@@ -1,0 +1,17 @@
+﻿
+@page
+@{
+    ViewBag.Title = "Home";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <h1>Welcome to PaySpace</h1>
+    <p>Use our tax calculator</p>
+    <div class="row">
+        <div class="col">
+            <a asp-controller="Calculator" asp-action="Calculate" class="btn btn-primary">Calculate Tax</a>
+            <a asp-controller="Calculator" asp-action="History" class="btn btn-secondary">Calculation History</a>
+        </div>
+    </div>
+</div>

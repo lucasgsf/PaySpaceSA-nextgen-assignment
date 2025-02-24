@@ -13,7 +13,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PaySpace.Calculator.Borders\PaySpace.Calculator.Borders.csproj" />
       <ProjectReference Include="..\PaySpace.Calculator.Data\PaySpace.Calculator.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>

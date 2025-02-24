@@ -1,38 +1,39 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 using PaySpace.Calculator.Web.Models;
 using PaySpace.Calculator.Web.Services.Abstractions;
-using PaySpace.Calculator.Web.Services.Models;
+using PaySpace.Calculator.Web.Borders.Models;
 
 namespace PaySpace.Calculator.Web.Controllers
 {
-    public class CalculatorController(ICalculatorHttpService calculatorHttpService) : Controller
+    [Route("/[Controller]")]
+    public class CalculatorController(ICalculatorService calculatorService, IPostalCodeService postalCodeService) : Controller
     {
-        public IActionResult Index()
-        {
-            var vm = this.GetCalculatorViewModelAsync();
-
-            return this.View(vm);
-        }
-
+        [HttpGet, Route("history")]
         public async Task<IActionResult> History()
         {
             return this.View(new CalculatorHistoryViewModel
             {
-                CalculatorHistory = await calculatorHttpService.GetHistoryAsync()
+                CalculatorHistory = await calculatorService.GetHistoryAsync()
             });
         }
 
-        [HttpPost]
+        [HttpGet, Route("calculate")]
+        public async Task<IActionResult> Calculate()
+        {
+            var vm = await this.GetCalculatorViewModelAsync();
+            return this.View(vm);
+        }
+
+        [HttpPost, Route("calculate")]
         [ValidateAntiForgeryToken()]
-        public async Task<IActionResult> Index(CalculateRequestViewModel request)
+        public async Task<IActionResult> Calculate(CalculateRequestViewModel request)
         {
             if (this.ModelState.IsValid)
             {
                 try
                 {
-                    await calculatorHttpService.CalculateTaxAsync(new CalculateRequest
+                    await calculatorService.CalculateTaxAsync(new CalculateRequest
                     {
                         PostalCode = request.PostalCode,
                         Income = request.Income
@@ -45,21 +46,20 @@ namespace PaySpace.Calculator.Web.Controllers
                     this.ModelState.AddModelError(string.Empty, e.Message);
                 }
             }
-
-            var vm = await this.GetCalculatorViewModelAsync(request);
-
+            
+            var vm = await this.GetCalculatorViewModelAsync();
             return this.View(vm);
         }
 
         private async Task<CalculatorViewModel> GetCalculatorViewModelAsync(CalculateRequestViewModel? request = null)
         {
-            var postalCodes = await calculatorHttpService.GetPostalCodesAsync();
+            var lstPostalCodes = await postalCodeService.GetPostalCodesAsync();
 
             return new CalculatorViewModel
             {
-                PostalCodes = postalCodes,
-                Income = request.Income,
-                PostalCode = request.PostalCode ?? string.Empty
+                PostalCodes = new SelectList(lstPostalCodes, nameof(PostalCode.Code), nameof(PostalCode.Code)),
+                Income = request?.Income ?? 0,
+                PostalCode = request?.PostalCode ?? string.Empty
             };
         }
     }

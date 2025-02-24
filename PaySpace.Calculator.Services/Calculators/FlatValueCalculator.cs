@@ -1,13 +1,21 @@
-﻿using PaySpace.Calculator.Services.Abstractions;
-using PaySpace.Calculator.Services.Models;
+﻿using PaySpace.Calculator.Data.Models;
+using PaySpace.Calculator.Borders.Models;
+using PaySpace.Calculator.Services.Abstractions.Strategies;
+using PaySpace.Calculator.Services.Abstractions.Calculators;
+using PaySpace.Calculator.Services.Abstractions.Services;
 
-namespace PaySpace.Calculator.Services.Calculators
+namespace PaySpace.Calculator.Services.Calculators;
+
+internal sealed class FlatValueCalculator(
+    ICalculatorSettingsService _calculatorSettingsService,
+    ICalculationServiceStrategy _calculationService) : ITaxCalculator
 {
-    internal sealed class FlatValueCalculator : IFlatValueCalculator
+    public CalculatorType CalculatorType => CalculatorType.FlatValue;
+
+    public async Task<CalculateResult> CalculateAsync(decimal income)
     {
-        public Task<CalculateResult> CalculateAsync(decimal income)
-        {
-            throw new NotImplementedException();
-        }
+        var setting = await _calculatorSettingsService.GetSettingAsync(CalculatorType, income);
+        return await _calculationService.GetCalculationService(setting.RateType)
+                                        .CalculateAsync(income, setting);
     }
 }

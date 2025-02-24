@@ -1,4 +1,4 @@
-using PaySpace.Calculator.Web.Services.Models;
+using PaySpace.Calculator.Web.Borders.Models;
 
 namespace PaySpace.Calculator.Web.Models
 {

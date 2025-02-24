@@ -1,9 +1,12 @@
-using PaySpace.Calculator.Web.Services;
+using PaySpace.Calculator.Web.Data.Extensions;
+using PaySpace.Calculator.Web.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 builder.Services.AddCalculatorHttpServices();
+builder.Services.AddRepositories(builder.Configuration);
 
 var app = builder.Build();
 
@@ -17,6 +20,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-app.MapControllerRoute(name: "default", pattern: "{controller=Calculator}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();
